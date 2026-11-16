@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EduPulse · Student Success Analytics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="edupulse_lab.css"></head><body>
+<div class="blobs"><i></i><i></i><i></i></div><div class="pg" id="pg"></div>
+<nav><div class="w"><a class="logo" href="#home" aria-label="EduPulse home">EDUPULSE<span class="logo-dot">.</span></a><div class="links"><a href="#overview">Project</a><a href="#lab">Data</a><a href="#res">Results</a><a href="#pred">Predict</a><a href="#methodology">Methodology</a></div><button class="ib" id="th" aria-label="Toggle color theme">◐</button></div></nav>
+
+<header class="hero" id="home"><div class="w">
+<div class="hero-copy"><span class="pill"><i></i>DATA SCIENCE · MODEL COMPARISON PROJECT</span>
+<h1>Earlier insight.<br><span class="gr">Better support.</span></h1>
+<p class="lead">Explore how student history relates to final grades. Compare regression models for grade prediction and classification models for pass likelihood—using a real student-performance dataset.</p>
+<div class="hero-actions"><a class="btn" href="#res">Explore model results <span aria-hidden="true">→</span></a><a class="btn o" href="#overview">How this project works</a></div>
+<p class="privacy"><span aria-hidden="true">✦</span> Runs locally in your browser. Your data stays on this device.</p></div>
+<aside class="hero-panel glass" aria-label="Project summary"><div class="panel-top"><span class="panel-kicker">THE QUESTION</span><span class="status"><i></i>Interactive study</span></div><p class="question">Can earlier grades and study habits help us spot who may need extra support?</p><div class="mini-chart" aria-hidden="true"><span style="--h:35%"></span><span style="--h:48%"></span><span style="--h:42%"></span><span style="--h:63%"></span><span style="--h:57%"></span><span style="--h:78%"></span><span style="--h:70%"></span><span style="--h:92%"></span><span style="--h:83%"></span><span style="--h:100%"></span><span style="--h:89%"></span><span style="--h:100%"></span></div><div class="panel-bottom"><span>Student performance</span><span>395 records · UCI</span></div></aside>
+<div class="kp"><div><b id="k1">0</b><span>Student records</span></div><div><b id="k2">0</b><span>Predictor features</span></div><div><b id="k3">0</b><span>Training students</span></div><div><b id="k4">0</b><span>Held-out students</span></div><div><b id="k5">—</b><span>Leading model</span></div></div>
+</div></header>
+
+<section id="overview"><div class="w rv">
+<div class="section-heading"><div><div class="tag">01 · THE PROJECT</div><h2>A practical student-support use case</h2><p class="mu section-intro">This project turns a classroom question into two machine-learning tasks, then compares models on held-out students—not on the data they learned from.</p></div><span class="section-index">PROJECT BRIEF</span></div>
+<div class="overview-grid">
+<article class="card glass brief-card"><span class="card-icon">◎</span><h3>Application</h3><p>Use historical student information to estimate academic outcomes and surface possible support needs early. Predictions are exploratory signals for educators—not decisions about students.</p></article>
+<article class="card glass brief-card"><span class="card-icon">↗</span><h3>Two prediction tasks</h3><p><b>Regression:</b> estimate a final grade on the 0–20 scale. <b>Classification:</b> estimate the probability of passing, defined here as a final grade of 10 or higher.</p></article>
+<article class="card glass brief-card"><span class="card-icon">⌁</span><h3>What is compared</h3><p>Linear Regression, Decision Tree, Random Forest and KNN for numeric grades; Logistic Regression, Decision Tree, Random Forest and KNN for pass/fail.</p></article>
+</div>
+<div class="project-note"><b>Why two kinds of models?</b> Logistic Regression predicts a binary outcome (pass or not pass), while Linear Regression predicts a numeric grade. They answer different questions, so they are compared within their own task—not ranked against each other.</div>
+</div></section>
+
+<section id="lab"><div class="w rv">
+<div class="section-heading"><div><div class="tag">02 · DATASET &amp; SETUP</div><h2>Start with the evidence</h2><p class="mu section-intro">Explore the dataset, choose the outcome and predictors, and adjust the evaluation split. Model results update as you make changes.</p></div><span class="section-index">395 STUDENTS</span></div>
+<div class="g2">
+<div class="card glass"><div class="card-heading"><div><span class="mini-label">YOUR DATA</span><h3>Dataset &amp; predictors</h3></div><span class="data-badge" id="dsn"></span></div>
+<p class="mu compact" id="datasetSummary"></p>
+<div class="drop" id="drop" role="button" tabindex="0" aria-label="Upload a CSV file"><div class="drop-icon" aria-hidden="true">↑</div><b>Drop a CSV here or browse</b><div class="mu" style="font-size:13px">CSV, TSV or semicolon-separated · numeric columns</div><input type="file" id="file" accept=".csv,.txt,.tsv" hidden></div>
+<div class="actions-row"><button class="btn o sm" id="reset">↺ Restore sample</button><button class="btn o sm" id="dl">↓ Export dataset</button></div>
+<label for="tg">Outcome column</label><select id="tg"></select>
+<label>Predictor features <span class="mu">(select the information available)</span></label><div class="chips" id="fc"></div>
+<div class="data-table-heading"><b>Dataset preview</b><span class="mu">Scroll to explore all records</span></div><div class="sc" id="dt"></div></div>
+<div class="card glass"><div class="card-heading"><div><span class="mini-label">EXPERIMENT DESIGN</span><h3>Choose a prediction task</h3></div></div>
+<label for="taskMode">What should the model predict?</label><select id="taskMode"><option value="regression">Final grade · regression</option><option value="classification">Pass likelihood · classification</option></select>
+<div class="field-help">Regression predicts a grade score. Classification estimates the chance of meeting the pass mark.</div>
+<div id="passMarkField" hidden><label for="passMark">Passing grade threshold</label><div class="unit-input"><input type="number" id="passMark" value="10" min="0" step="1"><span>score units</span></div><div class="field-help">A score at or above this value is labelled “Pass”. The sample uses the UCI dataset’s grade-10 pass mark.</div></div>
+<div class="add-student"><div><span class="mini-label">OPTIONAL</span><h3>Add a student record</h3></div><div class="af" id="af"></div><button class="btn sm" id="add" style="margin-top:14px">＋ Add to dataset &amp; retrain</button></div>
+<div class="settings-block"><div class="settings-title"><div><span class="mini-label">MODEL CONTROLS</span><h3>Evaluation settings</h3></div></div>
+<label for="sm">Train / test split</label><select id="sm"><option value="1">Saved reference split · 80 / 20</option><option value="0">Random split · use selected test size</option></select>
+<label for="ts">Held-out test data <span class="range-value"><span id="tsv">20</span>%</span></label><input type="range" id="ts" min="10" max="50" value="20">
+<label for="kk">KNN neighbours <span class="range-value">K = <span id="kv">5</span></span></label><input type="range" id="kk" min="1" max="25" value="5">
+<label for="dd">Maximum tree depth <span class="range-value"><span id="dv">0</span></span></label><input type="range" id="dd" min="0" max="15" value="0"><div class="field-help">Set to 0 for an unrestricted tree.</div>
+<label for="nn">Random Forest trees <span class="range-value"><span id="nv">100</span></span></label><input type="range" id="nn" min="10" max="300" step="10" value="100">
+<label for="sd">Random seed</label><input type="number" id="sd" value="42"></div></div></div>
+<div class="dataset-source"><span>DATA SOURCE</span><p id="datasetSourceDetails"></p><a id="datasetSourceLink" href="https://archive.ics.uci.edu/dataset/320/student+performance" target="_blank" rel="noreferrer">View dataset at the UCI Machine Learning Repository ↗</a></div>
+</div></section>
+
+<section id="res"><div class="w rv">
+<div class="section-heading"><div><div class="tag">03 · MODEL EVALUATION</div><h2>Evidence before a winner</h2><p class="mu section-intro">Compare models on held-out records. The leading model is selected using the metric that best matches the task.</p></div><span class="section-index">HELD-OUT TEST</span></div>
+<div class="result-context"><span class="context-dot"></span><p class="mu" id="rsub"></p></div>
+<div class="lb" id="lb"></div>
+<div class="win" id="win"></div>
+<div class="g2 results-grid"><div class="card glass"><div class="card-heading"><div><span class="mini-label">AT A GLANCE</span><h3>Metric comparison</h3></div></div><p class="mu compact" id="metricHint"></p><div class="tabs" id="mt"></div><div id="bars"></div></div>
+<div class="card glass"><div class="card-heading"><div><span class="mini-label">SIDE BY SIDE</span><h3>Performance table</h3></div><span class="mu sort-hint">Select a heading to sort</span></div><div class="sc table-sc"><table id="tb"></table></div><div id="refw"></div></div></div>
+<div class="card glass chart-card" style="margin-top:18px"><div class="card-heading"><div><span class="mini-label">MODEL DIAGNOSTICS</span><h3 id="chartTitle">Actual vs. predicted grade</h3></div></div><div id="chartDescription" class="field-help">Closer to the dashed line means a more accurate grade estimate.</div><div class="tabs" id="st"></div><div id="sv"></div></div>
+<div class="result-actions"><button class="btn o sm" id="dr">↓ Export comparison as CSV</button><span class="mu">Evaluation is for learning and comparison—not high-stakes student decisions.</span></div>
+</div></section>
+
+<section id="pred"><div class="w rv">
+<div class="section-heading"><div><div class="tag">04 · INTERACTIVE EXPLORER</div><h2>Explore a student profile</h2><p class="mu section-intro">Change the selected inputs and compare what each trained model estimates. Use this as a classroom demonstration, not an individual assessment.</p></div><span class="section-index">WHAT-IF TOOL</span></div>
+<div class="card glass predictor-card"><div class="predictor-heading"><div><span class="mini-label">STUDENT PROFILE</span><h3>Adjust the inputs</h3></div><span class="data-badge">Median values to start</span></div><div class="af predictor-inputs" id="pi"></div><div class="prediction-divider"><span class="mini-label">MODEL ESTIMATES</span><span class="mu" id="predictionLabel">Predicted final grade · 0–20</span></div><div class="pr" id="po"></div></div></div></section>
+
+<section id="methodology"><div class="w rv">
+<div class="section-heading"><div><div class="tag">05 · METHODOLOGY &amp; INTERPRETATION</div><h2>Understand what the scores mean</h2><p class="mu section-intro">A useful model comparison explains the target, evaluation method, metric trade-offs and limits—not just the top score.</p></div><span class="section-index">READ THE RESULTS</span></div>
+<div class="g2 methodology-grid">
+<article class="card glass"><span class="mini-label">REGRESSION · GRADE ESTIMATION</span><h3>How close are the predictions?</h3><p><b>MAE</b> is the average absolute error in grade points. <b>RMSE</b> also uses grade points, but penalizes large misses more. <b>R²</b> describes the variation explained relative to predicting the mean; higher is better and it may be negative.</p><p class="metric-rule">Use RMSE as the primary comparison; also check MAE and R².</p></article>
+<article class="card glass"><span class="mini-label">CLASSIFICATION · PASS LIKELIHOOD</span><h3>Can the model identify both outcomes?</h3><p><b>Precision</b> is the share of predicted passes that pass. <b>Recall</b> is the share of actual passes found. <b>F1</b> balances precision and recall; <b>accuracy</b> is the overall share correct. Check the confusion matrix and class balance, too.</p><p class="metric-rule">Use F1 as the primary comparison so neither precision nor recall is ignored.</p></article>
+<article class="card glass"><span class="mini-label">MODEL CHOICE</span><h3>Why use Logistic Regression?</h3><p>Logistic Regression is a classification model: it estimates a probability for a binary label. It belongs in the pass/fail comparison, not the numeric-grade comparison. Linear Regression is used for the numeric grade task.</p><p class="metric-rule">The highlighted winner is the strongest on the current held-out split and selected primary metric—not a universally best model.</p></article>
+<article class="card glass"><span class="mini-label">LIMITATIONS · RESPONSIBLE USE</span><h3>What this project cannot tell us</h3><p>The sample is small and specific to secondary-school mathematics in Portugal. Grades G1/G2 are earlier-period grades, so the demo assumes they are available. Correlation is not causation; these models cannot explain why a student is struggling or replace educator judgement.</p><p class="metric-rule">Results can vary by split, threshold, features and population. Validate on new data before real-world use.</p></article>
+</div>
+<div class="citation"><span>DATASET CITATION</span><p>Cortez, P. &amp; Silva, A. (2008). <i>Using Data Mining to Predict Secondary School Student Performance.</i> 5th Future Business Technology Conference (FUBUTEC). Dataset: <a href="https://archive.ics.uci.edu/dataset/320/student+performance" target="_blank" rel="noreferrer">UCI Machine Learning Repository · Student Performance</a>.</p></div>
+</div></section>
+<footer><div class="footer-inner"><a class="logo" href="#home">EDUPULSE<span class="logo-dot">.</span></a><span>Student Success Analytics · Data Science assignment project</span><a href="#methodology">Methodology</a><a href="#home">Back to top ↑</a></div></footer>
+<div class="toast" id="ts2"></div>
+
+<script src="edupulse_lab.js"></script></body></html>
